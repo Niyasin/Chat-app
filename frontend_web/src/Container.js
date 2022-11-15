@@ -1,5 +1,6 @@
 import { useState ,useEffect } from "react";
 import Login from "./Login.js";
+import Chat from "./Chat.js";
 import ContactList from "./ContactList.js";
 // import Chat from "./Chat.js";
 const Container=()=>{
@@ -22,7 +23,7 @@ const Container=()=>{
             <h2>{user.displayname}</h2>
             <div className="btn" onClick={()=>{}}>Logout</div>
         </div>
-            <div>Chat Component</div>
+            <Chat user={{username:'niyoo'}} contact={{username:'Niyas',displayname:'Niyas',profilePic:'./images/unknown.jpg'}}/>
         </div>}
         </>
     );
