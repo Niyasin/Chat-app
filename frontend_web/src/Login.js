@@ -19,7 +19,12 @@ const Login=(prop)=>{
             ],{duration:100})
         })
     },[lg]);
-    
+    const signup=()=>{
+        let xhr=new XMLHttpRequest();
+        xhr.open('POST','/signup');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({username,password}));
+    }
     if(lg){
         return(
             <div className="login_container">
@@ -63,7 +68,7 @@ const Login=(prop)=>{
                         onChange={(e)=>{setPassword(e.target.value)}}
                 />
                 <span className="error">{error}</span>
-                <div className="btn" onClick={''}>Signup</div>
+                <div className="btn" onClick={signup}>Signup</div>
                 <span className="link"onClick={()=>{lg?setlg(false):setlg(true);}}
                 >Already have anaccount?</span>
                 </div>
