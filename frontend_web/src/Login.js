@@ -5,7 +5,7 @@ const Login=(prop)=>{
     const [username,setUsername]=useState('');
     const [password,setPassword]=useState('');
     const [error,setError]=useState('');
-
+ 
     useEffect(()=>{
         document.querySelectorAll('h1,.btn,.link').forEach(e=>{
             e.animate([
@@ -63,7 +63,7 @@ const Login=(prop)=>{
                         onChange={(e)=>{setPassword(e.target.value)}}
                 />
                 <span className="error">{error}</span>
-                <div className="btn" onClick={()=>{}}>Signup</div>
+                <div className="btn" onClick={''}>Signup</div>
                 <span className="link"onClick={()=>{lg?setlg(false):setlg(true);}}
                 >Already have anaccount?</span>
                 </div>

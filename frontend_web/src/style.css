@@ -1,6 +1,6 @@
 :root{
     --primary:#577072;
-    --secondary:#94B49F;
+    --secondary:#56946c;
     --tertiary:#cdddca;
     --bg:#E5E3C9;
     --shadow: rgba(153, 153, 153, 0.448);
@@ -69,11 +69,11 @@ input{
     user-select: none;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap:15px;
     padding: 0 10%;
     box-shadow:0px 0px 10px var(--shadow);
 }
-
 .btn{
     width: fit-content;
     min-width:100px;

@@ -1,14 +1,7 @@
 import { useEffect, useState } from "react";
 const ContactList=(prop)=>{
     const[search,setSearch]=useState(false);
-    const[contacts,setContacts]=useState([
-        {
-            displayname:'niyas',
-            username:'niyasin',
-            profilePic:'./images/unknown.jpg'
-        },
-    ]);
-
+    const[contacts,setContacts]=useState([]);
     return(
         <div className="contactContainer">
         <div className="nav_contacts">

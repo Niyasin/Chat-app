@@ -2,19 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 
 const Chat=(props)=>{
-    const [data,setData]=useState([
-        {
-            type:'text',
-            from:'niyoo',
-            data:'Hello'
-        },
-        {
-            type:'image',
-            from:'niyoo',
-            data:'./images/unknown.jpg',
-            text:'hello'
-        },
-    ]);
+    const [data,setData]=useState([]);
     const [inputData,setInputData]=useState('');
     const [fileIn,setFileIn]=useState(false);
     const [file,setFile]=useState(false);
@@ -40,7 +28,6 @@ const Chat=(props)=>{
                             user={m.from==props.user.username?'send':'recieved'}
                             data={m.data} 
                             text={m.text?m.text:''}
-                            // previewImage={props.previewImage?}
                             />
                     )
                 })
