@@ -1,3 +1,4 @@
+import { PromiseProvider } from "mongoose";
 import { useEffect, useState } from "react";
 
 const Login=(prop)=>{
@@ -19,11 +20,35 @@ const Login=(prop)=>{
             ],{duration:100})
         })
     },[lg]);
+
     const signup=()=>{
         let xhr=new XMLHttpRequest();
         xhr.open('POST','/signup');
         xhr.setRequestHeader('Content-Type','application/json');
         xhr.send(JSON.stringify({username,password}));
+        xhr.onload=()=>{
+            let res=JSON.parse(xhr.responseText);
+            if(res.token){
+                prop.onLogin(username);
+            }else{
+                setError(res.error);
+            }
+        }
+    }
+
+    const login=()=>{
+        let xhr=new XMLHttpRequest();
+        xhr.open('POST','/login');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({username,password}));
+        xhr.onload=()=>{
+            let res=JSON.parse(xhr.responseText);
+            if(res.token){
+                prop.onLogin(username);
+            }else{
+                setError(res.error);
+            }
+        }
     }
     if(lg){
         return(
@@ -44,7 +69,7 @@ const Login=(prop)=>{
                 />
                 <span className="error">{error}</span>
                 <div className="btn"
-                                onClick={()=>{}}
+                                onClick={login}
                                 >Login</div>
                 <span className="link"
                                 onClick={()=>{lg?setlg(false):setlg(true);}}

@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
    },
    profilePic:{
        type:String,
-       default:'./img/unknown.jpg',
+       default:'./images/unknown.jpg',
    },
    contacts:[{
        id:{

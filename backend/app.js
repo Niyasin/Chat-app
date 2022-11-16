@@ -3,13 +3,14 @@ const http = require('http');
 const mongoose =require('mongoose');
 const socket = require('socket.io');
 const User=require('./models/user.js');
-const {signup}=require('./controllers/authentication.js');
+var cookieParser = require('cookie-parser')
+const {signup,login,auth}=require('./controllers/authentication.js');
 
 const app=express();
 const server=http.createServer(app);
 const io=require('socket.io')(server);
 app.use(express.json());
-
+app.use(cookieParser())
 
 mongoose.connect('mongodb://127.0.0.1:27017/chat')
 .then(()=>{
@@ -28,3 +29,31 @@ app.get('/',(req,res)=>{
 
 
 app.post('/signup',signup);
+app.post('/login',login);
+app.post('/authToken',auth, async (req,res)=>{
+    let data=await User.findOne({_id:req.user});
+    res.json({
+        validity:true,
+        username:data.username,
+    })
+});
+app.post('/getUserdata',auth,async (req,res)=>{
+    let data=await User.findOne({username:req.body.username});
+    if(data){
+        res.json({
+            username:data.username,
+            displayname:data.displayname,
+            profilePic:data.profilePic,
+        })
+    }
+});
+
+app.post('/getContacts',auth,async (req,res)=>{
+    let data=await User.findOne({username:req.user});
+    console.log(data);
+    if(data){
+        res.json(data.contacts);
+    }else{
+        res.json([]);
+    }
+});

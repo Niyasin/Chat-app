@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 const ContactList=(prop)=>{
     const[search,setSearch]=useState(false);
     const[contacts,setContacts]=useState([]);
+
+    useEffect(()=>{
+        let xhr=new XMLHttpRequest();
+        xhr.open('POST','/getContacts');
+        xhr.send();
+        xhr.onload=()=>{
+            let res=JSON.parse(xhr.responseText);
+            setContacts(res);console.log('loaded');
+        }
+    },[]);
     return(
         <div className="contactContainer">
         <div className="nav_contacts">
