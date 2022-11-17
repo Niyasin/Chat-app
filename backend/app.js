@@ -3,6 +3,7 @@ const http = require('http');
 const mongoose =require('mongoose');
 const socket = require('socket.io');
 const User=require('./models/user.js');
+const Message =require('./models/messages.js')
 var cookieParser = require('cookie-parser')
 const {signup,login,auth}=require('./controllers/authentication.js');
 
