@@ -39,11 +39,11 @@ const Container=()=>{
         <>
         {!user?<Login onLogin={(u)=>{onLogin(u)}}/>:
         <div className="container">
-            <ContactList user={user}/>
+            <ContactList user={user} setSelected={setSelected}/>
             <div className="userInfo">
             <img className="profile1x1"
                      src={user.profilePic}
-                     onClick={''}
+                     onClick={()=>{}}
                      />
             <h2>{user.displayname}</h2>
             <div className="btn" onClick={logout}>Logout</div>

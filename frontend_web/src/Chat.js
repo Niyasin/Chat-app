@@ -11,6 +11,17 @@ const Chat=(props)=>{
     const messages=useRef(null);
     const bottomRef=useRef(null);
 
+    useEffect(()=>{
+        if(props.contact){
+            let xhr=new XMLHttpRequest();
+            xhr.open('POST','/getMessages');
+            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.send(JSON.stringify({contact:props.contact.username}));
+            xhr.onload=()=>{
+                setData(JSON.parse(xhr.responseText));
+            }
+        }
+    },[props.contact]);
 
     return(
         <div className="chatContainer">

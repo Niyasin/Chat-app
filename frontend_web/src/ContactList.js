@@ -53,6 +53,7 @@ const ContactList=(prop)=>{
                                 key={C.username}
                                 contact={C}
                                 onClick={()=>{
+                                    prop.setSelected(C);
                                 }}/>
                 );
             }):search.map((C)=>{

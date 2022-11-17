@@ -89,3 +89,20 @@ app.post('/addContact',auth,async(req,res)=>{
         res.send('error');
     }
 });
+
+
+app.post('/getMessages',auth,async(req,res)=>{
+    try{
+        let contact=await User.findOne({username:req.body.contact});
+        let user=await User.findOne({_id:req.user});
+        for(let i=0;i<user.contacts.length;i++){
+            if(user.contacts[i].id.equals(contact._id)){
+                let messages =await Message.findById(user.contacts[i].data_id).exec((err,data)=>{
+                    res.json(data.data||[]);
+                });
+            }
+        }
+    }catch(err){
+        res.status(200);
+    }
+});
