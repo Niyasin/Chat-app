@@ -57,7 +57,6 @@ module.exports.auth =async(req,res,next)=>{
                 res.send('unauthorised request');
             }else{
                 req.user=decoded.id;
-                console.log(req.user);
                 next();
             }
         });

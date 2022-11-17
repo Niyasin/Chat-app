@@ -1,6 +1,6 @@
 :root{
     --primary:#577072;
-    --secondary:#56946c;
+    --secondary:#6c8184;
     --tertiary:#cdddca;
     --bg:#E5E3C9;
     --shadow: rgba(153, 153, 153, 0.448);
@@ -153,6 +153,8 @@ input{
 }
 .ContactListItem span{
     grid-area:c/auto;
+    font-family: Cairo;
+    line-height:1em;
     color:var(--secondary);
 }
 .profile1x1{

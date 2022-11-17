@@ -50,10 +50,14 @@ app.post('/getUserdata',auth,async (req,res)=>{
 
 app.post('/getContacts',auth,async (req,res)=>{
     let data=await User.findOne({username:req.user});
-    console.log(data);
     if(data){
         res.json(data.contacts);
     }else{
         res.json([]);
     }
+});
+
+app.post('/search',auth,async (req,res)=>{
+    let data=await User.search(req.query.q);
+    res.json(data);
 });

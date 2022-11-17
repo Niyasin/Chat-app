@@ -45,5 +45,14 @@ userSchema.pre('save',function(next){
     next();
 });
 
+userSchema.statics.search=async function(word){
+    const docs =await this.find({ "username" : { $regex: word, $options: 'i' }});
+    let data=[];
+    docs.forEach(e=>{
+        data.push({username:e.username,displayname:e.displayname,profilePic:e.profilePic});
+    });
+    return data;
+}
+
 const User =mongoose.model('user',userSchema); 
 module.exports=User;

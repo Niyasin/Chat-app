@@ -3,6 +3,19 @@ const ContactList=(prop)=>{
     const[search,setSearch]=useState(false);
     const[contacts,setContacts]=useState([]);
 
+    const handleSearch=(e)=>{
+        if(e.target.value.length>2){
+            let xhr=new XMLHttpRequest();
+            xhr.open('POST',`/search?q=${e.target.value}`);
+            xhr.send();
+            xhr.onload=()=>{
+                setSearch(JSON.parse(xhr.responseText));
+            }
+        }else{
+            setSearch(false);
+        }
+    }
+    
     useEffect(()=>{
         let xhr=new XMLHttpRequest();
         xhr.open('POST','/getContacts');
@@ -12,11 +25,12 @@ const ContactList=(prop)=>{
             setContacts(res);console.log('loaded');
         }
     },[]);
+
     return(
         <div className="contactContainer">
         <div className="nav_contacts">
             <h1>Contacts</h1>
-            <input className="input2" placeholder="Search"></input>
+            <input className="input2" placeholder="Search" onChange={(e)=>{handleSearch(e)}}></input>
         </div>
         <div className="listItems">
             {!search?contacts.map((C)=>{
