@@ -15,8 +15,21 @@ const ContactList=(prop)=>{
             setSearch(false);
         }
     }
-    
-    useEffect(()=>{
+    const handleAddContact=(contact)=>{
+        setSearch(false);
+        let xhr=new XMLHttpRequest();
+            xhr.open('POST',`/addContact`);
+            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.send(JSON.stringify({
+                contact
+            }));
+            xhr.onload=()=>{
+                if(xhr.responseText=='contact added'){
+                    loadContacts();
+                }
+            }
+    }
+    const loadContacts=()=>{
         let xhr=new XMLHttpRequest();
         xhr.open('POST','/getContacts');
         xhr.send();
@@ -24,7 +37,8 @@ const ContactList=(prop)=>{
             let res=JSON.parse(xhr.responseText);
             setContacts(res);console.log('loaded');
         }
-    },[]);
+    }
+    useEffect(loadContacts,[]);
 
     return(
         <div className="contactContainer">
@@ -45,7 +59,7 @@ const ContactList=(prop)=>{
                 return(
                     <ContactListItem 
                                 contact={C}
-                                onClick={(e)=>{}}
+                                onClick={(e)=>{handleAddContact(C.username)}}
                                 />
                 )
             })}
