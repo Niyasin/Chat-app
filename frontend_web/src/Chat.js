@@ -28,7 +28,23 @@ const Chat=(props)=>{
     useEffect(()=>{
         socket.emit('setOnline');
     });
-
+    socket.on('incomingMessage',(m)=>{
+        console.log(m);
+        if(props.contact.username==m.from){
+            setData(data.concat(m));
+        }
+    })
+    const send=()=>{
+        let m={
+            type:'text',
+            to:props.contact.username,
+            data:inputData,
+        }
+        socket.emit('privateMessage',m);
+        m.from=props.user.username;
+        setData(data.concat(m));
+        inputField.current.value='';
+    }
     return(
         <div className="chatContainer">
         {props.contact?<> 
@@ -57,9 +73,9 @@ const Chat=(props)=>{
                 ref={inputField}
                 className="input3"
                 onInput={(e)=>{setInputData(e.target.value)}}
-                onKeyDown={(e)=>{if(e.key==='Enter'){}}}
+                onKeyDown={(e)=>{if(e.key==='Enter'){send()}}}
                 />
-            <div className="btn2"  onClick={()=>{}}>&#10148;</div>
+            <div className="btn2"  onClick={()=>{send()}}>&#10148;</div>
             <div className="btn2" onClick={()=>{
                                                     setFile(null);
                                                     fileIn?setFileIn(false):setFileIn(true)

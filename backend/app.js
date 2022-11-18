@@ -29,8 +29,41 @@ io.on('connection',(socket)=>{
     socket.on('setOnline',()=>{
         connections[socket.user]=socket.id;
     });
+    socket.on('privateMessage',(data)=>{
+        handleMessage(socket,data);
+});
 
 });
+
+const handleMessage=async (socket,data)=>{
+    try{
+        let user=await User.findOne({_id:socket.user});
+        let contact=await User.findOne({username:data.to});
+        let messages;
+
+        for(let i=0;i<user.contacts.length;i++){
+            if(user.contacts[i].id.equals(contact._id)){
+                messages = await Message.findById(user.contacts[i].data_id);
+                break;
+            }
+        }
+
+        let m={
+            from:user.username,
+            type:data.type,
+            data:data.data,
+            text:data.text,
+        }
+        await Message.updateOne(messages,{$push:{data:m}});
+        m.to=data.to;
+        
+        if(connections[contact.id]){
+            io.to(connections[contact.id]).emit('incomingMessage',m);
+        }
+    }catch(err){
+
+    }
+}
 
 
 //Routes
