@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
+import io from 'socket.io-client';
 
 const Chat=(props)=>{
     const [data,setData]=useState([]);
@@ -22,6 +22,12 @@ const Chat=(props)=>{
             }
         }
     },[props.contact]);
+    
+    const token = document.cookie.split('=')[1];
+    const socket = io({auth:{token}});
+    useEffect(()=>{
+        socket.emit('setOnline');
+    });
 
     return(
         <div className="chatContainer">

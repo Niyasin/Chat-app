@@ -64,3 +64,18 @@ module.exports.auth =async(req,res,next)=>{
         res.send('unauthorised request')
     }
 }
+
+module.exports.authSocket =async(socket,next)=>{
+    const token =socket.handshake.auth.token;
+    if(token){
+        await jwt.verify(token,secret,(err,decoded)=>{
+            if(err){
+                
+            }else{
+                socket.user=decoded.id;
+                next();
+            }
+        });
+    }else{
+    }
+}

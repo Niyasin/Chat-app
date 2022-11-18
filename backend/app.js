@@ -5,7 +5,7 @@ const socket = require('socket.io');
 const User=require('./models/user.js');
 const Message =require('./models/messages.js')
 var cookieParser = require('cookie-parser')
-const {signup,login,auth}=require('./controllers/authentication.js');
+const {signup,login,auth,authSocket}=require('./controllers/authentication.js');
 
 const app=express();
 const server=http.createServer(app);
@@ -21,6 +21,16 @@ mongoose.connect('mongodb://127.0.0.1:27017/chat')
 .catch((er)=>{console.log('Database Error');console.error(er);});
 
 
+//Socket
+var connections={};
+io.use(authSocket);
+io.on('connection',(socket)=>{
+    
+    socket.on('setOnline',()=>{
+        connections[socket.user]=socket.id;
+    });
+
+});
 
 
 //Routes
