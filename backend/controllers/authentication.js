@@ -42,10 +42,10 @@ module.exports.login=async (req,res)=>{
             res.setHeader('Set-Cookie',`token=${token}`);
             res.json({token,error:undefined});
         }else{
-            throw Error('Invalied Password');
+            res.json({error:'Invalied Password'});
         }
     }else{
-        throw Error('Invalied username');
+        res.json({error:'Invalied username'});
     }
 }
 
@@ -62,6 +62,31 @@ module.exports.auth =async(req,res,next)=>{
         });
     }else{
         res.send('unauthorised request')
+    }
+}
+
+module.exports.changePassword= async(req,res)=>{
+    let {oldPassword,newPassword} =req.body;
+    const user=await User.findOne({_id:req.user});
+    if(user && newPassword && newPassword.length>5){
+        let [pw,salt]=user.password.split(':');
+        let hashed=scryptSync(oldPassword,salt,32);
+        let buffer = Buffer.from(pw,'hex');
+        let auth = timingSafeEqual(buffer,hashed);
+        if(auth){
+            let h=await scryptSync(newPassword,salt,32).toString('hex');
+            let p=h+':'+salt;
+            try{
+                await User.updateOne(user,{password:p});
+            }catch(err){
+                
+            }
+            res.send('success');
+        }else{
+            res.send('error');
+        }
+    }else{
+        res.send('error'); 
     }
 }
 

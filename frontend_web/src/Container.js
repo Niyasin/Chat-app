@@ -2,11 +2,13 @@ import { useState ,useEffect } from "react";
 import Login from "./Login.js";
 import Chat from "./Chat.js";
 import ContactList from "./ContactList.js";
+import ProfilSettings from "./ProfileSettings.js";
 
 const Container=()=>{
     let [user,setUser]=useState(null);
     let [selected,setSelected]=useState(null);
     let [imagePreview,setImagePreview]=useState(null);
+    let [settings,setSettings]=useState(true);
     
     const onLogin=(username)=>{
         let xhr=new XMLHttpRequest();
@@ -18,6 +20,15 @@ const Container=()=>{
         }
     }
 
+    const reload=()=>{
+        let xhr=new XMLHttpRequest();
+        xhr.open('POST','/getUserData');
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify({username:user.username}));
+        xhr.onload=()=>{
+            setUser(JSON.parse(xhr.responseText));
+        }
+    }
     const logout=()=>{
         document.cookie='token=';
         setUser(null);
@@ -33,7 +44,7 @@ const Container=()=>{
     }
 
     useEffect(()=>{
-        const xhr = new XMLHttpRequest();
+        let xhr = new XMLHttpRequest();
         xhr.open('POST','/authToken');
         xhr.send();
         xhr.onload=()=>{
@@ -70,7 +81,11 @@ const Container=()=>{
             <h2>{user.displayname}</h2>
             <div className="btn" onClick={logout}>Logout</div>
         </div>
+            {settings?
+            <ProfilSettings user={user} reload={reload}/>
+            :
             <Chat user={user} contact={selected} setImagePreview={setImagePreview}/>
+            }
         </div>
         </>
         }

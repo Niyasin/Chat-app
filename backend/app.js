@@ -4,14 +4,16 @@ const mongoose =require('mongoose');
 const socket = require('socket.io');
 const User=require('./models/user.js');
 const Message =require('./models/messages.js')
+const multer = require('multer');
 var cookieParser = require('cookie-parser')
-const {signup,login,auth,authSocket}=require('./controllers/authentication.js');
+const {signup,login,auth,authSocket,changePassword}=require('./controllers/authentication.js');
 
 const app=express();
 const server=http.createServer(app);
 const io=require('socket.io')(server);
 app.use(express.json());
 app.use(cookieParser())
+var upload=multer();
 
 mongoose.connect('mongodb://127.0.0.1:27017/chat')
 .then(()=>{
@@ -149,3 +151,30 @@ app.post('/getMessages',auth,async(req,res)=>{
         res.status(200);
     }
 });
+
+
+app.post('/updateProfilePic',auth,upload.single('data'),async(req,res)=>{
+    let image=req.file;
+    let user = await User.findOne({username:req.user});
+    try{
+        let encoded=`data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
+        await User.updateOne(user,{profilePic:encoded});
+        res.send('success');
+      
+    }catch(err){
+        res.send('error');
+    }
+});
+
+
+app.post('/updateDisplayName',auth,async(req,res)=>{
+    let newDN=req.body.displayname;
+    let user = await User.findOne({username:req.user});
+    try{
+        await User.updateOne(user,{displayname:newDN});
+        res.json({displayname:newDN});
+    }catch(err){
+    }
+});
+
+app.post('/changePassword',auth,changePassword);
