@@ -1,6 +1,7 @@
 :root{
     --primary:#577072;
     --secondary:#6c8184;
+    --secondaryTransperent:rgba(108, 129, 132, 0.42);
     --tertiary:#cdddca;
     --bg:#E5E3C9;
     --shadow: rgba(153, 153, 153, 0.448);
@@ -178,21 +179,26 @@ input{
     align-items: center;
 }
 
+
 .chatContainer{
+    overflow: hidden;
     grid-area:b;
     border-radius:var(--borderRadius);
     background:var(--bg);
     box-shadow:0px 0px 10px var(--shadow);
+    width:100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+
 .chatAltImage{
     width: 40%;
     opacity:0.7;
     align-self: center;
     user-select: none;
 }
+
 .nav_chat{
     display: flex;
     align-items: center;
@@ -208,10 +214,17 @@ input{
     height:88%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     gap:2%;
-    
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.message::-webkit-scrollbar{
+    display: none;
 }
 .chatInput{
+    z-index:10;
     height:6%;
     border-radius: calc(var(--borderRadius)/2);
     background:var(--tertiary);
@@ -229,7 +242,6 @@ input{
     border-radius: calc(var(--borderRadius)/2);
     font-family: Cairo;
     max-width:200px;
-    overflow: hidden;
 }
 .image1x1{
     width:100%;
@@ -241,6 +253,33 @@ input{
 .recieved{
     background: var(--secondary);
     align-self: flex-start;
+}
+.fileInput{
+    grid-area:b/b;
+    height:100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:var(--secondaryTransperent);
+    backdrop-filter:blur(5px);
+    border-radius:var(--borderRadius);
+    gap:2%;
+}
+
+.imagePreview1{
+    width:85%;
+    margin:50px;
+}
+.symbol{
+    width:150px;
+}
+.horizontal{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    gap:1%;
 }
 
 *{
