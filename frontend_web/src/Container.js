@@ -6,6 +6,7 @@ import ContactList from "./ContactList.js";
 const Container=()=>{
     let [user,setUser]=useState(null);
     let [selected,setSelected]=useState(null);
+    let [imagePreview,setImagePreview]=useState(null);
     
     const onLogin=(username)=>{
         let xhr=new XMLHttpRequest();
@@ -22,6 +23,14 @@ const Container=()=>{
         setUser(null);
         setSelected(null);
     }
+    const saveImage=(data)=>{
+        var link=document.createElement('a');
+        link.download=new Date().toLocaleTimeString().replace(' ','').replace(':','').replace(':','');
+        link.href=data;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 
     useEffect(()=>{
         const xhr = new XMLHttpRequest();
@@ -33,11 +42,24 @@ const Container=()=>{
                 onLogin(res.username);
             }
         }
+        window.addEventListener('keydown',(e)=>{
+            if(e.key==='Escape'){
+                setImagePreview(null);
+            }
+        })
     },[]);
 
     return(
         <>
         {!user?<Login onLogin={(u)=>{onLogin(u)}}/>:
+        <>
+        {imagePreview?<div className="imagePreview">
+            <img src={imagePreview}></img>
+            <div className="horizontal">
+                <div className="btn" onClick={()=>{setImagePreview(null)}}>Cancel</div>
+                <div className="btn" onClick={()=>{saveImage(imagePreview)}}>Save</div>
+            </div>
+        </div>:<></>}
         <div className="container">
             <ContactList user={user} setSelected={setSelected}/>
             <div className="userInfo">
@@ -48,8 +70,10 @@ const Container=()=>{
             <h2>{user.displayname}</h2>
             <div className="btn" onClick={logout}>Logout</div>
         </div>
-            <Chat user={user} contact={selected}/>
-        </div>}
+            <Chat user={user} contact={selected} setImagePreview={setImagePreview}/>
+        </div>
+        </>
+        }
         </>
     );
 }

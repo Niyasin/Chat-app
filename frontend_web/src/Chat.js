@@ -38,18 +38,22 @@ const Chat=(props)=>{
         let m={
             to:props.contact.username,
         }
-        if(file){
-            m.type='image';
-            m.data=file;
-            m.text=inputData;
-        }else{
-            m.type='text';
-            m.data=inputData;
+        if(inputData.length>0){
+
+            if(file){
+                m.type='image';
+                m.data=file;
+                m.text=inputData;
+            }else{
+                m.type='text';
+                m.data=inputData;
+            }
+            socket.emit('privateMessage',m);
+            m.from=props.user.username;
+            setData(data.concat(m));
+            inputField.current.value='';
+            setInputData('');
         }
-        socket.emit('privateMessage',m);
-        m.from=props.user.username;
-        setData(data.concat(m));
-        inputField.current.value='';
     }
 
     const handleDrop=(event)=>{
@@ -97,6 +101,7 @@ const Chat=(props)=>{
                                 user={m.from==props.user.username?'send':'recieved'}
                                 data={m.data} 
                                 text={m.text?m.text:''}
+                                setImagePreview={props.setImagePreview}
                                 />
                         )
                     })
@@ -143,7 +148,7 @@ const Message=(props)=>{
             <div className={cls}>
                 <img src={props.data}
                 onClick={()=>{
-                    props.previewImage(props.data);
+                    props.setImagePreview(props.data);
                 }}                
                 className='image1x1'/>
                 {props.text}
@@ -165,7 +170,7 @@ const FileInput=(props)=>{
                 <div className="btn" onClick={()=>{props.setFileIn(false);props.setFile(null)}}>Cancel</div>
             </>
             :<>
-            <img src="./images/drop.png" className="symbol"/>
+            <img src="./images/drop.png" className="symbol" />
             <h2>Drag Drop File Here</h2>
             <div className="horizontal">
                 <div className="btn" onClick={props.handleBrowse}>Browse File</div>
