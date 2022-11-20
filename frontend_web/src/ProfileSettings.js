@@ -99,10 +99,10 @@ import { useEffect, useState } from "react";
              <img className="profile2x2" src={props.user.profilePic} onClick={handleOpenFile}/>
             
                 <h1>
-                    {props.user.displayname}
+                    {props.user.displayname.slice(0,30)}
                 </h1>
                 <h3>
-                    @{props.user.username}
+                    @{props.user.username.slice(0,30)}
                 </h3> 
                 <div className="horizontal">
                     <div className="link" onClick={()=>{setEditPW(false);setEditDN(true);}}>Change Name</div>

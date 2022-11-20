@@ -71,14 +71,14 @@ const Container=()=>{
                 <div className="btn" onClick={()=>{saveImage(imagePreview)}}>Save</div>
             </div>
         </div>:<></>}
-        <div className="container">
+        <div className="container"  style={{transform:(imagePreview)?'scale(0.95)':'none'}}>
             <ContactList user={user} setSelected={(u)=>{setSelected(u);setSettings(false);}} />
             <div className="userInfo">
             <img className="profile1x1"
                      src={user.profilePic}
                      onClick={()=>{settings?setSettings(false):setSettings(true)}}
                      />
-            <h2>{user.displayname}</h2>
+            <h2>{user.displayname.slice(0,8)}</h2>
             <div className="btn" onClick={logout}>Logout</div>
         </div>
             {settings?

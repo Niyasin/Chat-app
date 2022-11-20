@@ -24,6 +24,7 @@ h1,h2,h3,h4{
     padding: 0;
     margin: 0;
 }
+
 .link{
     color:var(--primary);
     font-family:Cairo;
@@ -84,14 +85,14 @@ input{
     font-family: Cairo;
     font-weight: bold;
     border-radius:calc(var(--borderRadius)/2);
-    background: var(--primary);
-    color: var(--bg);
     border:1px solid var(--primary);
+    background: none;
+    color: var(--primary);
     transition:0.1s;
 }
 .btn:hover ,.btn2:hover{
-    background: none;
-    color: var(--primary);
+    background: var(--primary);
+    color: var(--tertiary);
 }
 .btn2{
     height:100%;
@@ -103,8 +104,8 @@ input{
     justify-content: center;
     user-select: none;
     border-radius:10em;
-    background: var(--primary);
-    color: var(--bg);
+    background: none;
+    color: var(--primary);
     border:1px solid var(--primary);
     transition:0.1s;
 }
@@ -118,6 +119,7 @@ input{
     grid-template-columns:1fr 2fr;
     grid-template-rows: 1fr 9fr;
     gap:1%;
+    transition:0.1s;
 }
 .contactContainer{
     grid-area:c;
@@ -245,21 +247,32 @@ input{
     width: fit-content;
     padding:1%;
     font-size:18px;
-    line-height:1em;
+    line-height:1.2em;
     border-radius: calc(var(--borderRadius)/2);
-    font-family: Cairo;
+    font-family:Cairo;
     max-width:200px;
+    word-wrap: break-word;
+    
 }
 .image1x1{
     width:100%;
 }
 .send{
-    background: var(--tertiary);
+    background: var(--secondary);
     align-self: flex-end;
+    border-bottom-right-radius: 0;
+    color: #fff;
 }
 .recieved{
-    background: var(--secondary);
+    color: #111;
+    background: var(--tertiary);
+    border-bottom-left-radius:0;
     align-self: flex-start;
+}
+.emoji{
+    background: none;
+    font-size:35px;
+    padding:0;
 }
 .fileInput{
     grid-area:b/b;
@@ -346,7 +359,29 @@ input{
     justify-content:flex-start;
     align-items: center;
     padding:2% 0;
+}
+@keyframes anim{
+    0%{transform: scale(0.95); filter: blur(10px); opacity:0.5;}
+    100%{transform: scale(1);filter: blur(0px);opacity:1;}
+}
+@keyframes fade{
+    0%{opacity:0.2;}
+    100%{opacity:1;}
+}
+@keyframes shake{
+    0%{transform:translateX(0px)}
+    20%{transform:translateX(5px)}
+    40%{transform:translateX(-5px)}
+    60%{transform:translateX(0px)}
+    80%{transform:translateX(-5px)}
+    100%{transform:translateX(5px)}
+}
 
+.message{
+    animation: shake 0.1s;
+}
+.chatContainer,.userInfo,.login_container,.settingsContainer,.contactContainer,.popup,.imagePreview img{ 
+    animation: anim 0.2s;
 }
 
 *{

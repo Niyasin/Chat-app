@@ -22,11 +22,15 @@ const Chat=(props)=>{
             }
         }
     },[props.contact]);
+    useEffect(()=>{
+        if(bottomRef.current){bottomRef.current.scrollIntoView({behavior:'smooth'});}
+    },[data])
     
     const token = document.cookie.split('=')[1];
     const socket = io({auth:{token}});
     useEffect(()=>{
         socket.emit('setOnline');
+        if(messages.current){messages.current.scrollTop=messages.current.scrollHeight-messages.current.clientHeight}
     });
     socket.on('incomingMessage',(m)=>{
         console.log(m);
@@ -137,6 +141,9 @@ export default Chat;
 const Message=(props)=>{
     if(props.type=='text'){
         let cls='message '+props.user;
+        if(props.data.length<=2  && !( /\P{Emoji}/u.test(props.data))){
+            cls+=' emoji';
+        }
         return(
             <div className={cls}>
                 {props.data}
