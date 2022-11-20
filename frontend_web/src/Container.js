@@ -8,7 +8,7 @@ const Container=()=>{
     let [user,setUser]=useState(null);
     let [selected,setSelected]=useState(null);
     let [imagePreview,setImagePreview]=useState(null);
-    let [settings,setSettings]=useState(true);
+    let [settings,setSettings]=useState(false);
     
     const onLogin=(username)=>{
         let xhr=new XMLHttpRequest();
@@ -72,11 +72,11 @@ const Container=()=>{
             </div>
         </div>:<></>}
         <div className="container">
-            <ContactList user={user} setSelected={setSelected}/>
+            <ContactList user={user} setSelected={(u)=>{setSelected(u);setSettings(false);}} />
             <div className="userInfo">
             <img className="profile1x1"
                      src={user.profilePic}
-                     onClick={()=>{}}
+                     onClick={()=>{settings?setSettings(false):setSettings(true)}}
                      />
             <h2>{user.displayname}</h2>
             <div className="btn" onClick={logout}>Logout</div>

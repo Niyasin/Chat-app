@@ -71,7 +71,6 @@ import { useEffect, useState } from "react";
             xhr.open('POST',`/updateProfilePic`);
             let form=new FormData();
             form.append('data',file);
-            console.log(form);
             xhr.send(form);
         xhr.onload=()=>{
             if(xhr.responseText=='success'){

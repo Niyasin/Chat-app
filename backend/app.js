@@ -155,7 +155,7 @@ app.post('/getMessages',auth,async(req,res)=>{
 
 app.post('/updateProfilePic',auth,upload.single('data'),async(req,res)=>{
     let image=req.file;
-    let user = await User.findOne({username:req.user});
+    let user = await User.findOne({_id:req.user});
     try{
         let encoded=`data:${image.mimetype};base64,${image.buffer.toString('base64')}`;
         await User.updateOne(user,{profilePic:encoded});
