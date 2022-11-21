@@ -138,6 +138,29 @@ const Chat=(props)=>{
 }
 export default Chat;
 
+const replaceLink=(text)=>{
+    let startIndex=text.search('https://');
+    let R=[];
+    if(startIndex!=-1){
+        R[0]=text.substring(0,startIndex-1);
+        let endIndex=text.indexOf(' ',startIndex);
+        if(endIndex!=-1){
+            R[1]=text.substring(startIndex,endIndex-1);
+            R[2]=text.substring(endIndex,text.length);
+        }else{
+            R[1]=text.substring(startIndex,text.length);
+            R[2]='';
+        }
+        return(
+            <>
+            {R[0]+' '}<a className="messageLink" href={R[1]}>{R[1]}</a>{' '+R[2]}
+            </>
+        )
+    }else{
+        return text;
+    }
+}
+
 const Message=(props)=>{
     if(props.type=='text'){
         let cls='message '+props.user;
@@ -146,7 +169,7 @@ const Message=(props)=>{
         }
         return(
             <div className={cls}>
-                {props.data}
+                {replaceLink(props.data)}
             </div>
     );
     }else if(props.type=='image'){
@@ -158,7 +181,7 @@ const Message=(props)=>{
                     props.setImagePreview(props.data);
                 }}                
                 className='image1x1'/>
-                {props.text}
+                {replaceLink(props.text)}
             </div>
             )
     }

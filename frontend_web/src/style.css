@@ -383,7 +383,14 @@ input{
 .chatContainer,.userInfo,.login_container,.settingsContainer,.contactContainer,.popup,.imagePreview img{ 
     animation: anim 0.2s;
 }
-
+.send > .messageLink{
+    text-decoration:none;
+    color: rgb(142, 230, 235);
+}
+.recieved > .messageLink{
+    text-decoration:none;
+    color: rgb(33, 152, 198);
+}
 *{
     /* border: 1px solid rgb(231, 2, 101); */
 }
