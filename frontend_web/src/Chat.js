@@ -42,7 +42,7 @@ const Chat=(props)=>{
         let m={
             to:props.contact.username,
         }
-        if(inputData.length>0){
+        if(inputData.length>0 || file){
 
             if(file){
                 m.type='image';
@@ -57,6 +57,8 @@ const Chat=(props)=>{
             setData(data.concat(m));
             inputField.current.value='';
             setInputData('');
+            setFile(null);
+            setFileIn(false);
         }
     }
 
