@@ -1,11 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View} from 'react-native';
+import {useFonts} from 'expo-font';
+
+import Login from './Login'
+
+const url='http://localhost:8080/'
 
 export default function App() {
+  const Cairo = useFonts({
+    'Cairo':require('./assets/Cairo.ttf'),
+  });
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Login url={url}/>
     </View>
   );
 }
