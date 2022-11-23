@@ -35,7 +35,17 @@ const ContactList=(prop)=>{
         xhr.send();
         xhr.onload=()=>{
             let res=JSON.parse(xhr.responseText);
-            setContacts(res);console.log('loaded');
+            if(res.length>0){
+                setContacts(res);
+            }else{
+                setContacts([
+                    {
+                        username:'chatbot',
+                        displayname:'Chat Bot',
+                        profilePic:'./images/bot.jpg',
+                    }
+                ]);
+            }
         }
     }
     useEffect(loadContacts,[]);

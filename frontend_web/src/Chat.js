@@ -10,16 +10,48 @@ const Chat=(props)=>{
     const inputField=useRef(null);
     const messages=useRef(null);
     const bottomRef=useRef(null);
-
     useEffect(()=>{
         if(props.contact){
-            let xhr=new XMLHttpRequest();
-            xhr.open('POST','/getMessages');
-            xhr.setRequestHeader('Content-Type','application/json');
-            xhr.send(JSON.stringify({contact:props.contact.username}));
-            xhr.onload=()=>{
-                setData(JSON.parse(xhr.responseText));
+            if(props.contact.username=='chatbot'){
+                setData([
+                    {
+                        type:'image',
+                        from:'chatbot',
+                        data:'./images/bot.jpg',
+                        text:'Welcome ,we are happy that you are here '
+                    },
+                    {
+                        type:'text',
+                        from:'chatbot',
+                        data:"App developed by Niyas",
+                    },
+                    {
+                        type:'text',
+                        from:'chatbot',
+                        data:'https://niyasin.tk',
+                    },
+                    {
+                        type:'text',
+                        from:'chatbot',
+                        data:'Hey Lets Start Chating',
+                    },
+                    {
+                        type:'text',
+                        from:'chatbot',
+                        data:'Find your friends by searching contacts',
+
+                    },
+                ]);
+            }else{
+                let xhr=new XMLHttpRequest();
+                xhr.open('POST','/getMessages');
+                xhr.setRequestHeader('Content-Type','application/json');
+                xhr.send(JSON.stringify({contact:props.contact.username}));
+                xhr.onload=()=>{
+                    setData(JSON.parse(xhr.responseText));
+                }
             }
+
         }
     },[props.contact]);
     useEffect(()=>{
@@ -147,7 +179,7 @@ const replaceLink=(text)=>{
         R[0]=text.substring(0,startIndex-1);
         let endIndex=text.indexOf(' ',startIndex);
         if(endIndex!=-1){
-            R[1]=text.substring(startIndex,endIndex-1);
+            R[1]=text.substring(startIndex,endIndex);
             R[2]=text.substring(endIndex,text.length);
         }else{
             R[1]=text.substring(startIndex,text.length);
