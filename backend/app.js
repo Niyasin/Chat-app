@@ -5,6 +5,7 @@ const socket = require('socket.io');
 const User=require('./models/user.js');
 const Message =require('./models/messages.js')
 const multer = require('multer');
+const path = require('path');
 var cookieParser = require('cookie-parser')
 const {signup,login,auth,authSocket,changePassword}=require('./controllers/authentication.js');
 
@@ -13,6 +14,7 @@ const server=http.createServer(app);
 const io=require('socket.io')(server);
 app.use(express.json());
 app.use(cookieParser())
+app.use(express.static(path.join(__dirname,'build')));
 var upload=multer();
 
 mongoose.connect('mongodb://127.0.0.1:27017/chat')
@@ -70,7 +72,7 @@ const handleMessage=async (socket,data)=>{
 
 //Routes
 app.get('/',(req,res)=>{
-    res.send('Active');
+    res.sendFile(path.join(__dirname,'build','index.html'));
 });
 
 
