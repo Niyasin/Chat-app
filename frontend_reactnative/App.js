@@ -4,31 +4,40 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screens/Home';
 import Chat from './Screens/Chat';
-import { useEffect } from 'react';
-
+import Login from './Screens/Login';
+import { useEffect ,useState} from 'react';
 
 const Stack = createNativeStackNavigator();
-const loadFont =async()=>{
-  await Font.loadAsync('Poppins-reqular',require('./assets/Poppins-Regular.ttf'));
-  await Font.loadAsync('Poppins-bold',require('./assets/Poppins-Bold.ttf'));
+const loadFont = async()=>{
+  await Font.loadAsync({
+    'Poppins-regular':require('./assets/Poppins-Regular.ttf'),
+    'Poppins-bold':require('./assets/Poppins-Bold.ttf'),
+  })
 }
 
 
 
 export default function App() {
+  const [user, setUser] = useState(null);
+  const [token,setToken]=useState(null);
   useEffect(()=>{loadFont()},[]);
+
+  useEffect(()=>{
+    
+  },[token]);
   return (
-    <View style={styles.container}>
+  <>{user?
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen component={Home} name='Home'/>
           <Stack.Screen component={Chat} name='Chat'/>
         </Stack.Navigator>
       </NavigationContainer>
-    </View>
+    :
+      <Login setToken={setToken}/>
+  }</>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
