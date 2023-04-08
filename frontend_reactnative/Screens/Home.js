@@ -1,18 +1,69 @@
-import { SafeAreaView ,StyleSheet} from "react-native";
+import { Avatar,Text } from "@react-native-material/core";
+import { useEffect,useState } from "react";
+import { SafeAreaView ,StyleSheet,ScrollView,View,TouchableHighlight} from "react-native";
+import { ORIGIN } from "../config";
 
-export default function Home({natigation,route}){
+export default function Home({navigation,route}){
+  const {user,token} = route.params;
+  const [contacts,setContacts]=useState([]);
+
+  useEffect(()=>{
+    navigation.setOptions({
+      headerRight:()=>{
+        if(user.profilePic=='./images/unknown.jpg'){
+          return(<Avatar size={40} image={require('../assets/unknown.jpg')}/>)
+        }else{
+          return(<Avatar size={40} image={{uri:user.profilePic}}/>)
+        }
+    }
+    });
+    getContacts();
+  },[]);
+
+  const getContacts = ()=>{
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST',`${ORIGIN}/getContacts`);
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.send();
+    xhr.onload=()=>{
+      if(xhr.responseText){
+        let res =JSON.parse(xhr.responseText);
+        setContacts(res);
+      }
+    }
+  }
+
     return(
         <SafeAreaView style={styles.container}>
-
+          <ScrollView>
+            {contacts.map((e,i)=>{
+              return(
+                <ListItem e={e} key={i}/>
+              )
+            })}
+          </ScrollView>
         </SafeAreaView>
     )
 }
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
       justifyContent: 'center',
     },
   });
+
+  const ListItem = ({e})=>{
+    return(
+      <TouchableHighlight underlayColor="#eee" onPress={()=>{}}>
+        <View style={{display:'flex',flexDirection:'row',marginHorizontal:20,paddingVertical:10,borderBottomWidth:1,borderColor:'#ddd'}}>
+          {e.profilePic=="./images/unknown"?<Avatar size={50} image={require('../assets/unknown.jpg')}/>:<Avatar size={50} image={{uri:e.profilePic}}/>}
+          <View style={{display:'flex',flexDirection:'column',marginLeft:20}}>
+            <Text style={{fontFamily:'Poppins-bold',fontSize:20}}>{e.displayname}</Text>
+            <Text style={{fontFamily:'Poppins-regular',fontSize:15,color:'#999'}}>@{e.username}</Text>
+          </View>
+        </View>
+      </TouchableHighlight>
+    )
+  }

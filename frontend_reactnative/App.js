@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Screens/Home';
 import Chat from './Screens/Chat';
 import Login from './Screens/Login';
+import {ORIGIN} from './config'
+
 import { useEffect ,useState} from 'react';
 
 const Stack = createNativeStackNavigator();
@@ -22,19 +24,17 @@ export default function App() {
   const [token,setToken]=useState(null);
   useEffect(()=>{loadFont()},[]);
 
-  useEffect(()=>{
-    
-  },[token]);
+
   return (
   <>{user?
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen component={Home} name='Home'/>
+          <Stack.Screen component={Home} initialParams={{user,token}} name='Home' options={{title:'Contacts'}}/>
           <Stack.Screen component={Chat} name='Chat'/>
         </Stack.Navigator>
       </NavigationContainer>
     :
-      <Login setToken={setToken}/>
+      <Login setToken={setToken} setUser={setUser}/>
   }</>
   );
 }

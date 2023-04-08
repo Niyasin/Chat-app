@@ -3,16 +3,18 @@ import {TextInput,Button,Text,ActivityIndicator} from '@react-native-material/co
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useState } from "react";
-const ORIGIN ='https://suggerdeploy.onrender.com';
+import {ORIGIN} from '../config'
 
 
 
-export default function Login(){
+
+export default function Login({setUser,setToken}){
   const [login,setLogin]=useState(true);
   const [loading,setLoading]=useState(false);
-  const [username,setUsername]=useState(null);
-  const [password,setPassword]=useState(null);
+  const [username,setUsername]=useState('testuser');
+  const [password,setPassword]=useState('123456');
   const [error,setError]=useState(null);
+
 
 
   const send = ()=>{
@@ -26,20 +28,39 @@ export default function Login(){
     }));
     xhr.onload= async()=>{
       if(xhr.responseText){
-        setLoading(false);
         let res = JSON.parse(xhr.responseText);
         if(res.token){
           await AsyncStorage.setItem('@token',res.token);
+          setToken(res.token);
+          getUserData(username);
+          
         }else{
           setError(res.error);
+          setLoading(false);
         }
       }else{
         setError("Something went wrong !");
+        setLoading(false);
       }
     }
   }
   
-  
+  const getUserData = (username)=>{
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST',`${ORIGIN}/getUserdata`);
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.send(JSON.stringify({username}));
+    xhr.onload=()=>{
+      if(xhr.responseText){
+        let res= JSON.parse(xhr.responseText)
+        setUser(res); 
+      }else{
+        
+      }
+      setLoading(false);
+    }
+  }
+
   return(
         <SafeAreaView style={styles.container}>
           <View style={styles.content}>
