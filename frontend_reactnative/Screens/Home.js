@@ -2,10 +2,12 @@ import { Avatar,Text } from "@react-native-material/core";
 import { useEffect,useState } from "react";
 import { SafeAreaView ,StyleSheet,ScrollView,View,TouchableHighlight} from "react-native";
 import { ORIGIN } from "../config";
+import socket from "../socket";
 
 export default function Home({navigation,route}){
   const {user,token} = route.params;
   const [contacts,setContacts]=useState([]);
+  // const [socket,setSocket]=useState(null);
 
   useEffect(()=>{
     navigation.setOptions({
@@ -18,6 +20,7 @@ export default function Home({navigation,route}){
     }
     });
     getContacts();
+    socket.emit('setOnline');
   },[]);
 
   const getContacts = ()=>{
@@ -32,13 +35,15 @@ export default function Home({navigation,route}){
       }
     }
   }
-
+  
     return(
         <SafeAreaView style={styles.container}>
           <ScrollView>
             {contacts.map((e,i)=>{
               return(
-                <ListItem e={e} key={i}/>
+                <ListItem e={e} key={i} action={()=>{
+                  navigation.navigate('Chat',{user,contact:e})
+                }}/>
               )
             })}
           </ScrollView>
@@ -54,9 +59,9 @@ export default function Home({navigation,route}){
     },
   });
 
-  const ListItem = ({e})=>{
+  const ListItem = ({e,action})=>{
     return(
-      <TouchableHighlight underlayColor="#eee" onPress={()=>{}}>
+      <TouchableHighlight underlayColor="#eee" onPress={action}>
         <View style={{display:'flex',flexDirection:'row',marginHorizontal:20,paddingVertical:10,borderBottomWidth:1,borderColor:'#ddd'}}>
           {e.profilePic=="./images/unknown"?<Avatar size={50} image={require('../assets/unknown.jpg')}/>:<Avatar size={50} image={{uri:e.profilePic}}/>}
           <View style={{display:'flex',flexDirection:'column',marginLeft:20}}>
