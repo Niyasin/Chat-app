@@ -7,7 +7,9 @@ import socket from "../socket";
 export default function Home({navigation,route}){
   const {user,token} = route.params;
   const [contacts,setContacts]=useState([]);
-  // const [socket,setSocket]=useState(null);
+  socket.auth={token}
+  socket.connect();
+
 
   useEffect(()=>{
     navigation.setOptions({

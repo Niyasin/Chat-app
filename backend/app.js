@@ -29,7 +29,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/chat')
 var connections={};
 io.use(authSocket);
 io.on('connection',(socket)=>{
-    
     socket.on('setOnline',()=>{
         connections[socket.user]=socket.id;
     });
