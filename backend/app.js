@@ -43,7 +43,6 @@ const handleMessage=async (socket,data)=>{
         let user=await User.findOne({_id:socket.user});
         let contact=await User.findOne({username:data.to});
         let messages;
-
         for(let i=0;i<user.contacts.length;i++){
             if(user.contacts[i].id.equals(contact._id)){
                 messages = await Message.findById(user.contacts[i].data_id);
