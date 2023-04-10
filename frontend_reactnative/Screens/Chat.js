@@ -103,7 +103,6 @@ const Inputs = ({user,contact,setMessages,image,setImage})=>{
       socket.emit('privateMessage',data);
       setMessages(messages=>[...messages,data]);
     }else if(image){
-      console.log('sfds');
       let data={
         from:user.username,
         to:contact.username,
@@ -121,19 +120,38 @@ const Inputs = ({user,contact,setMessages,image,setImage})=>{
   
   const pickImage = async()=>{
     let {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    console.log(status);
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes:ImagePicker.MediaTypeOptions.Images,
-      allowEditing:true,
-      quality:0.9,
-      allowsMultipleSelection:false,
-      base64:true,
-    })
-    if(result){
-      let res=result.assets[0].base64
-      setImage('data:image/'+result.assets[0].uri.split('.').pop()+';base64,'+res);
-      animvalue.value=popup?0:150;
-      setPopup(false);
+    if(status=='granted'){
+
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes:ImagePicker.MediaTypeOptions.Images,
+        allowEditing:true,
+        quality:0.9,
+        allowsMultipleSelection:false,
+        base64:true,
+      })
+      if(result){
+        let res=result.assets[0].base64
+        setImage('data:image/'+result.assets[0].uri.split('.').pop()+';base64,'+res);
+        animvalue.value=popup?0:150;
+        setPopup(false);
+      }
+    }
+  }
+
+  const openCamera = async()=>{
+    let {status} = await ImagePicker.requestCameraPermissionsAsync();
+    if(status=='granted'){
+      let result = await ImagePicker.launchCameraAsync({
+        allowsEditing:true,
+        quality:0.5,
+        base64:true,
+      })
+      if(result){
+        let res =result.assets[0].base64
+        setImage('data:image/'+result.assets[0].uri.split('.').pop()+';base64,'+res);
+        animvalue.value=popup?0:150;
+        setPopup(false);
+      }
     }
   }
 
@@ -162,7 +180,7 @@ const Inputs = ({user,contact,setMessages,image,setImage})=>{
           <Icon name="collections" color={'#555'} size={40}  />
           <Text style={{marginTop:10}}>Gallery</Text>
       </></TouchableHighlight>
-      <TouchableHighlight onPress={()=>{}} underlayColor={'#ddd'} style={{marginLeft:10,padding:20,borderRadius:10,paddingHorizontal:30}}><>
+      <TouchableHighlight onPress={()=>{openCamera()}} underlayColor={'#ddd'} style={{marginLeft:10,padding:20,borderRadius:10,paddingHorizontal:30}}><>
           <Icon name="camera-alt" color={'#555'} size={40}  />
           <Text style={{marginTop:10}}>Camera</Text>
       </></TouchableHighlight>
