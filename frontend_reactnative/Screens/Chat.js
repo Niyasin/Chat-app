@@ -9,8 +9,10 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 export default function Chat({navigation,route}){
+  
   const [messages,setMessages]=useState([]); 
   const [image,setImage]=useState(null);
+  const [preview,setPreview]=useState(null);
 
   const {user,contact} = route.params;
   const scrollRef=useRef(null);
@@ -44,6 +46,7 @@ export default function Chat({navigation,route}){
   }
     return(
         <SafeAreaView style={styles.container}>
+
           {image?<View style={styles.imagePreview}>
             <Image style={{width:'80%',height:'50%',resizeMode:'contain'}} source={{uri:image}}/>
             <IconButton  icon={props=><Icon size={30} name="close"/>} onPress={()=>{setImage(null)}}/>
@@ -60,10 +63,12 @@ export default function Chat({navigation,route}){
                     fontFamily:'Poppins-regular'
                   }}>{e.data}</Text>
                   :<>
+                  <TouchableHighlight onPress={()=>{navigation.navigate('Preview',{image:e.data})}}>
                   <Image 
                     source={{uri:e.data}}
                     style={{width:200,height:250,resizeMode:'cover'}} 
                     />
+                    </TouchableHighlight>
                   <Text style={{
                     color:e.from==user.username?'#fff':'#000',
                     fontFamily:'Poppins-regular'

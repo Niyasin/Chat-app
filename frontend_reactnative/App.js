@@ -8,6 +8,7 @@ import Login from './Screens/Login';
 import {ORIGIN} from './config'
 
 import { useEffect ,useState} from 'react';
+import Preview from './Screens/Preview';
 
 const Stack = createNativeStackNavigator();
 const loadFont = async()=>{
@@ -31,6 +32,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen component={Home} initialParams={{user,token}} name='Home' options={{title:'Contacts'}}/>
           <Stack.Screen component={Chat} name='Chat'/>
+          <Stack.Screen component={Preview} name='Preview' options={{header:()=>{}}}/>
         </Stack.Navigator>
       </NavigationContainer>
     :
