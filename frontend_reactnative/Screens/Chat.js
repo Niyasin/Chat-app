@@ -129,7 +129,6 @@ const Inputs = ({user,contact,setMessages,image,setImage})=>{
       allowsMultipleSelection:false,
       base64:true,
     })
-    console.log(await ImagePicker.getAssetInfoAsync(result.assets[0].uri));
     if(result){
       let res=result.assets[0].base64
       setImage('data:image/'+result.assets[0].uri.split('.').pop()+';base64,'+res);
